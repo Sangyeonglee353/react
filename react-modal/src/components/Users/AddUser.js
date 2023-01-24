@@ -1,18 +1,22 @@
 import Card from "../UI/Card";
 import Button from "../UI/Button";
 import ErrorModal from "../UI/ErrorModal";
+import Wrapper from "../Helpers/Wrapper";
 import classes from "../Users/AddUser.module.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const AddUser = (props) => {
-  const [enteredUsername, setEnteredUsername] = useState("");
-  const [enteredAge, setEnteredAge] = useState("");
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();
   const [error, setError] = useState(); // Error 상태 관리
 
   const submitHandler = (event) => {
     event.preventDefault();
+    const enteredName = nameInputRef.current.value;
+    const enteredUserAge = ageInputRef.current.value;
+
     // 1. [유효성 검사]_공백여부
-    if (enteredUsername.trim().length === 0 || enteredAge.trim().length === 0) {
+    if (enteredName.trim().length === 0 || enteredUserAge.trim().length === 0) {
         // 각 에러별 제목과 메시지 설정
       setError({
         title: "Invlaid input",
@@ -22,7 +26,7 @@ const AddUser = (props) => {
     }
 
     // 2. [유효성 검사]_나이가 음수 여부
-    if (+enteredAge < 0) {
+    if (+enteredUserAge < 0) {
         // 각 에러별 제목과 메시지 설정
       setError({
         title: "Invalid age",
@@ -31,20 +35,20 @@ const AddUser = (props) => {
       return;
     }
 
-    props.onAddUser(enteredUsername, enteredAge); // 배열에 값 업데이트
+    props.onAddUser(enteredName, enteredUserAge); // 배열에 값 업데이트
     // console.log(enteredUsername, enteredAge);
 
     // 3. 값 초기화
-    setEnteredUsername("");
-    setEnteredAge("");
-  };
+    // setEnteredUsername("");
+    // setEnteredAge("");
 
-  const userNameChangeHandler = (event) => {
-    setEnteredUsername(event.target.value);
-  };
+    // 가능
+    nameInputRef.current.value = "";
+    ageInputRef.current.value = "";
 
-  const ageChangeHandler = (event) => {
-    setEnteredAge(event.target.value);
+    // 불가(const 상수이므로)
+    // enteredName = "";
+    // enteredUserAge = "";
   };
 
   // 에러 없애기
@@ -53,7 +57,7 @@ const AddUser = (props) => {
   }
 
   return (
-    <div>
+    <Wrapper>
       {error && <ErrorModal title={error.title} message={error.message} onConfirm={errorHandler} />}
       <Card className={classes.input}>
         <form onSubmit={submitHandler}>
@@ -61,20 +65,18 @@ const AddUser = (props) => {
           <input
             type="text"
             id="username"
-            value={enteredUsername} // 4. 값 반영
-            onChange={userNameChangeHandler}
+            ref={nameInputRef}
           />
           <label htmlFor="age">Age (Years)</label>
           <input
             type="number"
             id="age"
-            value={enteredAge} // 4. 값 반영
-            onChange={ageChangeHandler}
+            ref={ageInputRef}
           />
           <Button type="submit">Add User</Button>
         </form>
       </Card>
-    </div>
+    </Wrapper>
   );
 };
 
