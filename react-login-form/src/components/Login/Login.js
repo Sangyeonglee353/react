@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Card from '../UI/Card/Card';
 import classes from './Login.module.css';
@@ -11,12 +11,32 @@ const Login = (props) => {
   const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
+  // useEffect() 사용: email과 password값이 변경된 경우 유효성 검사 실행
+  // Cleanup 함수 적용: 불필요한 유효성 검사 횟수를 줄임
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log("Checking form validity!");
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      );
+    }, 500);
+
+    return (
+      () => {
+        console.log("Cleanup");
+        clearTimeout(identifier);
+      }
+    )
+    
+  }, [enteredEmail, enteredPassword]);
+
   const emailChangeHandler = (event) => {
     setEnteredEmail(event.target.value);
 
-    setFormIsValid(
-      event.target.value.includes('@') && enteredPassword.trim().length > 6
-    );
+    // 기존 코드
+    // setFormIsValid(
+    //   event.target.value.includes('@') && enteredPassword.trim().length > 6
+    // );
   };
 
   const passwordChangeHandler = (event) => {
