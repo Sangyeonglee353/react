@@ -44,20 +44,26 @@ const Login = (props) => {
   });
 
   // useEffect() 사용: email과 password값이 변경된 경우 유효성 검사 실행
-  // Cleanup 함수 적용: 불필요한 유효성 검사 횟수를 줄임
-  // useEffect(() => {
-  //   const identifier = setTimeout(() => {
-  //     console.log("Checking form validity!");
-  //     setFormIsValid(
-  //       enteredEmail.includes("@") && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500);
+  // 객체 디스트럭처링
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
 
-  //   return () => {
-  //     console.log("Cleanup");
-  //     clearTimeout(identifier);
-  //   };
-  // }, [enteredEmail, enteredPassword]);
+  // Cleanup 함수 적용: 불필요한 유효성 검사 횟수를 줄임
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log("Checking form validity!");
+      setFormIsValid(
+        // enteredEmail.includes("@") && enteredPassword.trim().length > 6
+        // emailState.isValid && passwordState.isValid
+        emailIsValid && passwordIsValid // 변경됨!
+      );
+    }, 500);
+
+    return () => {
+      console.log("Cleanup");
+      clearTimeout(identifier);
+    };
+  }, [emailIsValid, passwordIsValid]); // 변경됨!
 
   const emailChangeHandler = (event) => {
     // setEnteredEmail(event.target.value);
@@ -65,10 +71,10 @@ const Login = (props) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
 
     // 기존 코드
-    setFormIsValid(
-      // event.target.value.includes("@") && enteredPassword.trim().length > 6
-      event.target.value.includes("@") && passwordState.isValid
-    );
+    // setFormIsValid(
+    //   // event.target.value.includes("@") && enteredPassword.trim().length > 6
+    //   event.target.value.includes("@") && passwordState.isValid
+    // );
   };
 
   const passwordChangeHandler = (event) => {
@@ -77,10 +83,10 @@ const Login = (props) => {
     dispatchPassword({ type: "USER_INPUT", val: event.target.value });
 
     // 기존 코드
-    setFormIsValid(
-      // event.target.value.trim().length > 6 && enteredEmail.includes("@")
-      event.target.value.trim().length > 6 && emailState.value.includes("@")
-    );
+    // setFormIsValid(
+    //   // event.target.value.trim().length > 6 && enteredEmail.includes("@")
+    //   event.target.value.trim().length > 6 && emailState.isValid
+    // );
   };
 
   const validateEmailHandler = () => {
