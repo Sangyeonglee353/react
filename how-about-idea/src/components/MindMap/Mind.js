@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import MindMap from "./MindMap";
-import * as go from "./go.js";
+// import * as go from "./go-debug.js";
+// import * as go from "./go.js";
+import * as go from 'gojs';
+// import * as go from "./goCDN.js";
 
 const MindCss = styled.div`
   /* width:100vw;
 height:100vh; */
-  background: red;
+  margin-top: 40px;
+  background: white;
+
+  .title {
+    height: 30px;
+    font-weight: bold;
+  }
 
   .diagram-component {
     width: 100%;
     height: 500px;
-    border: solid 1px black;
-    background-color: blue;
+    /* border: solid 1px black; */
+    background-color: white;
   }
 `;
 
@@ -34,7 +43,7 @@ function initDiagram() {
 
     // 1.3 allow double-click in background to create a new node
     "clickCreatingTool.archetypeNodeData": {
-      text: "new node",
+      text: "new",
       color: "lightblue",
     },
 
@@ -59,7 +68,7 @@ function initDiagram() {
     ),
     $(
       go.Shape,
-      "RoundedRectangle",
+      "Circle",
       {
         name: "SHAPE",
         fill: "white",
@@ -112,10 +121,10 @@ function initDiagram() {
 
 function Mind() {
   let DUMMY_nodeDataArray = [
-    { key: 0, text: "Alpha", color: "lightblue", loc: "0 0" },
-    { key: 1, text: "Beta", color: "orange", loc: "150 0" },
-    { key: 2, text: "Gamma", color: "lightgreen", loc: "0 150" },
-    { key: 3, text: "Delta", color: "pink", loc: "150 150" },
+    { key: 0, text: "선풍기", color: "pink", loc: "0 0" },
+    { key: 1, text: "전동기", color: "orange", loc: "150 0" },
+    { key: 2, text: "바람", color: "lightblue", loc: "0 150" },
+    { key: 3, text: "날개", color: "purple", loc: "150 150" },
   ];
 
   let DUMMY_linkDataArray = [
@@ -141,13 +150,14 @@ function Mind() {
   return (
     <MindCss>
       {/* <div id="myDiagramDiv" className="diagram-component" /> */}
+      <p className="title">마인드맵</p>
       <MindMap
         initDiagram={initDiagram}
         divClassName="diagram-component"
         nodeDataArray={nodeDataArray}
         linkDataArray={linkDataArray}
       />
-      <p>mindMap test</p>
+      
     </MindCss>
   );
 }

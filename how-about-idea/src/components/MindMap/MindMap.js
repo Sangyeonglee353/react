@@ -1,5 +1,7 @@
 import { useEffect } from "react";
-import * as go from "./go.js";
+// import * as go from "./go-debug.js";
+// import * as go from "./go.js";
+import * as go from 'gojs';
 
 const MindMap = (props) => {
   const initDiagram = props.initDiagram;

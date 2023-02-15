@@ -1,6 +1,7 @@
 import Modal from "./UI/Modal";
 import styled from "styled-components";
 import tempImg from "../images/feed_1.png";
+import { Link } from "react-router-dom";
 
 const ContentBlock = styled.div`
   margin: 30px;
@@ -17,6 +18,11 @@ const ContentBlock = styled.div`
   ul {
     list-style: none;
   }
+
+  li {
+    padding-top: 10px;
+    border-bottom: 1px solid #000;
+  }
 `;
 const FeedDetail = (props) => {
   const userName = props.feedData.name;
@@ -30,7 +36,7 @@ const FeedDetail = (props) => {
       {/* <p>Test</p> */}
       <ContentBlock>
         <label>마인드맵</label>
-        <img src={tempImg} alt="tempImg" />
+        <Link to="/mind"><img src={tempImg} alt="tempImg" /></Link>
         <p>
           입력 문장: 선풍기 <br/><br/>
           
