@@ -1,5 +1,3 @@
-import React from "react";
-
 const requests = {
   fetchNowPlaying: "movie/now_playing",
   fetchTrending: "trending/all/week",
