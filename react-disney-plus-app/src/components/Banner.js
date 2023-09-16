@@ -1,7 +1,8 @@
-import axios from "axios";
+import axios from "../api/axios";
 import React, { useEffect, useState } from "react";
 import requests from "../api/requests";
 import styled from "styled-components";
+import "./Banner.css";
 
 const Banner = () => {
   const [isClicked, setIsClicked] = useState(false);
@@ -32,52 +33,55 @@ const Banner = () => {
     return str?.length > n ? str.substring(0, n) + "..." : str;
   };
 
-  if (!isClicked) {
+  if (isClicked) {
     return (
       <>
         <Container>
           <HomeConntainer>
             <Iframe
-              onScroll={`https://www.youtube.com/embed/${movie.videos.results[0].key}?controls=&autoplay=1&loop=1&mute=1`}
+              src={`https://www.youtube.com/embed/${movie.videos.results[0].key}?controls=0&autoplay=1&loop=1&mute=1&playlist=${movie.videos.results[0].key}`}
+              width="640"
+              height="360"
+              frameborder="0"
+              allow="autoplay; fullscreen"
             ></Iframe>
           </HomeConntainer>
         </Container>
         <button onClick={() => setIsClicked(false)}>X</button>
       </>
     );
-  }
+  } else {
+    return (
+      <header
+        className="banner"
+        style={{
+          backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie.backdrop_path}")`,
+          backgroundPosition: "top center",
+          backgroundSize: "cover",
+        }}
+      >
+        <div className="banner__contents">
+          <h1 className="banner_title">
+            {movie.title || movie.name || movie.original_name}
+          </h1>
 
-  return (
-    <header
-      className="banner"
-      style={{
-        backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie.backdrop_path}")`,
-        backgroundPosition: "top center",
-        backgroundSize: "cover",
-      }}
-    >
-      <div className="banner__contents">
-        <h1 className="banner_title">
-          {movie.title || movie.name || movie.original_name}
-        </h1>
+          <div className="banner__buttons">
+            {movie?.videos?.results[0]?.key && (
+              <button
+                className="banner__button play"
+                onClick={() => setIsClicked(true)}
+              >
+                Play
+              </button>
+            )}
+          </div>
 
-        <div className="banner__buttons">
-          {movie.videos?.result[0]?.key && (
-            <button
-              className="banner__button play"
-              onClick={() => setIsClicked(true)}
-            >
-              {" "}
-              Play
-            </button>
-          )}
+          <p className="banner__description">{truncate(movie.overview, 100)}</p>
         </div>
-
-        <h1 className="banner__description">{truncate(movie.overview, 100)}</h1>
-      </div>
-      <div className="banner--fadeBottom" />
-    </header>
-  );
+        <div className="banner--fadeBottom" />
+      </header>
+    );
+  }
 };
 
 export default Banner;

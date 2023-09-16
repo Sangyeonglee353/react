@@ -31,7 +31,7 @@ const Category = () => {
       <Wrap>
         <img src="/images/viewers-national.png" alt="national" />
         <video autoPlay loop muted>
-          <source src="/videos/national-greographic.mp4" type="video/mp4" />
+          <source src="/videos/national-geographic.mp4" type="video/mp4" />
         </video>
       </Wrap>
     </Container>
