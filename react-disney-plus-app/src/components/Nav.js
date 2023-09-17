@@ -1,5 +1,85 @@
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+const Nav = () => {
+  // [기능 2] 검색 기능
+  const { pathname } = useLocation(); // object로 받아야 한다는 점!
+  const [searchValue, setSearchValue] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setSearchValue(e.target.value);
+    navigate(`/search?q=${e.target.value}`);
+  };
+
+  // [기능 1] 스크롤시 색상 변경
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const handleScroll = () => {
+    if (window.scrollY > 50) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+  };
+
+  return (
+    <NavWrapper show={show}>
+      <Logo>
+        <img
+          alt="Disney Plus logo"
+          src="/images/logo.svg"
+          onClick={() => {
+            window.location.href = "/";
+          }}
+        />
+      </Logo>
+      {pathname === "/" ? (
+        <Login>Login</Login>
+      ) : (
+        <>
+          <Input
+            value={searchValue}
+            onChange={handleChange}
+            className="nav__input"
+            tpye="text"
+            placeholder="영화를 검색해주세요."
+          ></Input>
+        </>
+      )}
+    </NavWrapper>
+  );
+};
+
+export default Nav;
+
+const Login = styled.a`
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  border: 1px solid #f9f9f9;
+  border-radius: 4px;
+  transition: all 0.2s ease 0s;
+`;
+const Input = styled.input`
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: rgba(0, 0, 0, 0.582);
+  border-radius: 5px;
+  color: white;
+  padding: 5px;
+  border: 1px solid lightgray;
+`;
 
 const NavWrapper = styled.nav`
   position: fixed;
@@ -29,38 +109,3 @@ const Logo = styled.a`
     width: 100%;
   }
 `;
-
-const Nav = () => {
-  // [기능 1] 스크롤시 색상 변경
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 50) {
-        setShow(true);
-      } else {
-        setShow(false);
-      }
-    });
-
-    return () => {
-      window.removeEventListener("scroll", () => {});
-    };
-  }, []);
-
-  return (
-    <NavWrapper show={show}>
-      <Logo>
-        <img
-          alt="Disney Plus logo"
-          src="/images/logo.svg"
-          onClick={() => {
-            window.location.href = "/";
-          }}
-        />
-      </Logo>
-    </NavWrapper>
-  );
-};
-
-export default Nav;
