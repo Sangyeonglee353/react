@@ -29,7 +29,7 @@ const SearchPage = () => {
   const fetchSearchMovie = async (searchTerm) => {
     try {
       const response = await axios.get(
-        `/search/multi?inclue_adult=false&query=${searchTerm}`
+        `/search/multi?include_adult=false&query=${searchTerm}`
       );
       setSearchResults(response.data.results);
       console.log("response: ", response);
@@ -37,6 +37,7 @@ const SearchPage = () => {
       console.log("error: ", error);
     }
   };
+
   if (searchResults.length > 0) {
     return (
       <section className="search-container">

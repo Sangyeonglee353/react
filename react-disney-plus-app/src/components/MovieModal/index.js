@@ -12,6 +12,7 @@ const MovieModal = ({
   vote_average,
   setModalOpen,
 }) => {
+  // [기능 1] 바깥쪽 클릭시 닫기 활성화
   const ref = useRef();
   useOnClickOutside(ref, () => {
     setModalOpen(false);

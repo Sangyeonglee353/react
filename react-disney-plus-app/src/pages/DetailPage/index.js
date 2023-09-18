@@ -4,25 +4,23 @@ import axios from "../../api/axios";
 
 const DetailPage = () => {
   let { movieId } = useParams();
-  const [movies, setMovies] = useState({});
+  const [movie, setMovie] = useState({});
 
   useEffect(() => {
     async function fetchData() {
-      const response = await axios.get(
-        `https://api.themovies.org/3/movie/${movieId}`
-      );
-      setMovies(response.data);
+      const response = await axios.get(`/movie/${movieId}`);
+      setMovie(response.data);
     }
     fetchData();
   }, [movieId]);
 
-  if (!movies) return null;
+  if (!movie) return null;
 
   return (
     <section>
       <img
         className="modal__poster-img"
-        src={`https://image.tmdb.org/t/p/original/${movies.backdrop_path}`}
+        src={`https://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
         alt="modal__poster-img"
       />
     </section>
